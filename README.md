@@ -25,7 +25,7 @@ Spring Boot 기반의 확장자 차단 시스템입니다.
 customType이 1인 경우, 서버는 이를 **고정 확장자**로 판단하고, handleFixedExtension() 메서드를 호출합니다.
 
 #### 1) 확장자 차단 목록 확인
-<img width="392" height="172" alt="Image" src="https://github.com/user-attachments/assets/c4a67a96-2e04-4d2c-8e94-ceb93d1961cd" />
+<img width="535" height="248" alt="Image" src="https://github.com/user-attachments/assets/4ed6dd87-9cac-47ca-b684-a0fd6c9ba3c7" />
 <br />
 
 handleFixedExtension() 내부에서 extensionService.isBlocked(ext)를 호출해, 해당 확장자가 현재 차단 목록에 존재하는지 확인합니다.
@@ -102,3 +102,14 @@ FixedExtension을 Enum으로 정의함으로써, 추후 고정 확장자를 추�
 <img width="467" height="97" alt="Image" src="https://github.com/user-attachments/assets/576e279f-f1c0-440f-acac-0e8644d6275f" />
 
 고정 확장자든 커스텀 확장자든, Controller에서 전달받은 ext는 처리에 앞서 먼저 해당 값이 존재하는지와 길이가 20자를 초과하지 않는지를 검사합니다.
+
+### 5.3 커스텀 확장자 고정 확장자에 포함되는지 여부 체크
+FixedExtension의 Enum에 해당 ext가 Fixed Extension(고정 확장자)인지 체크하는 메소드를 정의하였고, 해당 메소드를 통해 입력받은 ext가 고정 확장자인지 여부를 판단하도록 제작했습니다.
+
+만약, 입력된 커스텀 확장자가 고정 확장자에 포함된다면, 해당 커스텀 확장자는 등록되지 않습니다.
+
+### 5.4 확장자 중복 작업 방지 및 알림 처리 구현
+
+<img width="629" height="266" alt="Image" src="https://github.com/user-attachments/assets/e4281788-2c60-4e42-af6b-14842cba928f" />
+
+동일한 화면에서 여러 관리자가 동시에 작업할 수 있는 상황을 고려하여, 확장자 추가 또는 삭제 시 중복 작업을 감지해 알림창을 표시하고, 중복된 작업은 실패 처리되도록 구현하였습니다.
