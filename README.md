@@ -102,3 +102,10 @@ FixedExtension을 Enum으로 정의함으로써, 추후 고정 확장자를 추�
 <img width="467" height="97" alt="Image" src="https://github.com/user-attachments/assets/576e279f-f1c0-440f-acac-0e8644d6275f" />
 
 고정 확장자든 커스텀 확장자든, Controller에서 전달받은 ext는 처리에 앞서 먼저 해당 값이 존재하는지와 길이가 20자를 초과하지 않는지를 검사합니다.
+
+
+### 5.3 확장자 중복 작업 방지 및 알림 처리 구현
+
+<img width="629" height="266" alt="Image" src="https://github.com/user-attachments/assets/e4281788-2c60-4e42-af6b-14842cba928f" />
+
+동일한 화면에서 여러 관리자가 동시에 작업할 수 있는 상황을 고려하여, 확장자 추가 또는 삭제 시 중복 작업을 감지해 알림창을 표시하고, 중복된 작업은 실패 처리되도록 구현하였습니다.
