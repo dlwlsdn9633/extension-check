@@ -6,4 +6,5 @@ import lombok.Data;
 public class ExtensionRequestDto {
     private String ext;
     private int customType;
+    private int isChecked;
 }

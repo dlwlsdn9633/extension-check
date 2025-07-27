@@ -57,6 +57,10 @@ public class ExtensionApiController {
         return ResponseEntity.badRequest().body(ExtensionResponse.fail("유효하지 않는 확장자입니다."));
     }
     private ResponseEntity<ExtensionResponse> handleFixedExtension(ExtensionRequestDto requestDto) {
+        if (!isValidState(requestDto)) {
+            return ResponseEntity.badRequest().body(ExtensionResponse.fail("유효하지 않는 작업입니다."));
+        }
+
         if (!extensionService.isBlocked(requestDto.getExt())) {
             Extension inserted = extensionService.insert(Extension.builder()
                     .ext(requestDto.getExt())
@@ -70,6 +74,22 @@ public class ExtensionApiController {
             return ResponseEntity.internalServerError().body(ExtensionResponse.fail("확장자 삭제 실패"));
         }
         return ResponseEntity.ok(ExtensionResponse.success(null));
+    }
+    private boolean isValidState(ExtensionRequestDto requestDto) {
+        List<Extension> reqExtList = extensionService.list(Extension.builder().ext(requestDto.getExt()).build());
+        switch (requestDto.getIsChecked()) {
+            case 0 -> {
+                // TODO: isChecked가 0일 때는, 방금 체크를 해제한 것이므로, block 목록에 있어야 한다.
+                return !reqExtList.isEmpty();
+            }
+            case 1 -> {
+                // TODO: isChecked가 1일 때는, 방금 체크한 것이므로, block 목록에 없어야 한다.
+                return reqExtList.isEmpty();
+            }
+            default -> {
+                return false;
+            }
+        }
     }
     private ResponseEntity<ExtensionResponse> handleCustomExtension(ExtensionRequestDto requestDto) {
         // TODO: Custom Extension이 200개가 넘는지 확인하기

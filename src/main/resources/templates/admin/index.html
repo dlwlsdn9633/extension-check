@@ -76,13 +76,16 @@
 
     function onChangeCheckBox(obj) {
         const ext = $(obj).val();
+        const isChecked = $(obj).is(":checked");
+
         $.ajax({
             url: "/v1/api",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({
                 ext: ext,
-                customType: 1
+                customType: 1,
+                isChecked: (isChecked) ? 1 : 0
             }),
             dataType: "json",
             async: false,
@@ -91,7 +94,7 @@
             },
             error: function(json) {
                 alert(json.responseJSON.message);
-                $(obj).prop("checked", false);
+                $(obj).prop("checked", !isChecked);
                 return;
             }
         });
