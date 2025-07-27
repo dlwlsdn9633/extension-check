@@ -1,6 +1,7 @@
 package com.flow.extension_check.controller;
 
 import com.flow.extension_check.service.FileService;
+import com.flow.extension_check.util.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Map;
 
 @Slf4j
@@ -51,6 +53,13 @@ public class HomeController {
             redirectAttributes.addFlashAttribute("message", "파일을 업로드 해주세요.");
             return "redirect:/";
         }
+        for (MultipartFile file : files) {
+            if (Function.isNull(file.getOriginalFilename()).isEmpty()) {
+                redirectAttributes.addFlashAttribute("message", "빈 파일이 존재합니다.");
+                return "redirect:/";
+            }
+        }
+
         Map<String, Integer> result = fileService.uploadFiles(files);
         redirectAttributes.addFlashAttribute("success", result.get("success"));
         redirectAttributes.addFlashAttribute("fail", result.get("fail"));
