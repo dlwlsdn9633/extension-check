@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <title>관리자 화면</title>
+</head>
+<body >
+    <nav th:replace="fragments/navbar :: navbar"></nav>
+    <div class="container py-5">
+        <h1 class="mb-4">관리자 화면</h1>
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                고정 확장자
+            </div>
+            <div class="card-body">
+                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-2">
+                    <div th:each="ext : ${fixedExtensions}" class="form-check">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            th:value="${ext.label}"
+                            th:id="'check-' + ${ext.label}"
+                            onchange="onChangeCheckBox(this);"
+                            th:checked="${fixedBlockedList.contains(ext.label)}"
+                        />
+                        <label class="form-check-label" th:for="'check-' + ${ext.label}" th:text="${ext.label}"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                커스텀 확장자
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="custom_blocked_ext" class="form-label">확장자 입력</label>
+                    <input type="text" id="custom_blocked_ext" class="form-control" maxlength="20" placeholder="확장자를 입력하세요 (예: zip)" />
+                </div>
+
+                <button class="btn btn-success w-100 mb-3" onclick="onClickAddBtn();">+ 추가</button>
+
+                <div class="text-end text-muted mb-2">
+                    <span id="custom_blocked_ext_size" th:text="${customBlockedList.size()}"></span> / <span th:text="${MAX_CUSTOM_EXT_SIZE}"></span>
+                </div>
+
+                <div id="custom_blocked_ext_container" class="d-flex flex-wrap gap-2">
+                    <div th:each="ext : ${customBlockedList}">
+                        <div th:replace="fragments/extension-btn :: extensionBtnFragment(${ext})"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
+<script>
+    document.getElementById("custom_blocked_ext").addEventListener("input", function() {
+        let newValue = '';
+        for (let i = 0; i < this.value.length; ++i) {
+            if (this.value[i] === ' ') {
+                newValue += '-';
+                continue;
+            }
+            newValue += this.value[i];
+        }
+        this.value = newValue;
+    });
+
+    function onChangeCheckBox(obj) {
+        const ext = $(obj).val();
+        $.ajax({
+            url: "/v1/api",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                ext: ext,
+                customType: 1
+            }),
+            dataType: "json",
+            async: false,
+            success: function(json) {
+
+            },
+            error: function(json) {
+                alert(json.responseJSON.message);
+                $(obj).prop("checked", false);
+                return;
+            }
+        });
+    }
+
+    function onClickAddBtn() {
+        const custom_blocked_ext = $("#custom_blocked_ext").val();
+        const custom_blocked_ext_size = parseInt($("#custom_blocked_ext_size").text());
+
+        $.ajax({
+            url: "/v1/api",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                ext: custom_blocked_ext,
+                customType: 2
+            }),
+            dataType: "json",
+            async: false,
+            success: function(json) {
+                $.ajax({
+                    url: "/admin/fragment/extension-btn",
+                    method: "GET",
+                    data: { ext: custom_blocked_ext },
+                    async: false,
+                    success: function(html) {
+                        $("#custom_blocked_ext_container").append(html);
+                        $("#custom_blocked_ext").val("");
+                        $("#custom_blocked_ext_size").text(custom_blocked_ext_size + 1);
+                    },
+                    error: function() {
+                        alert("확장자 버튼 불러오기 실패");
+                        return;
+                    }
+                })
+            },
+            error: function(json) {
+                alert(json.responseJSON.message);
+                return;
+            }
+        })
+    }
+
+    function onClickDeleteBtn(obj) {
+        const ext = $(obj).data("ext");
+        const custom_blocked_ext_size = parseInt($("#custom_blocked_ext_size").text());
+
+        if (ext === undefined || ext === null || ext === "") {
+            alert("삭제할 확장자가 존재하지 않습니다.");
+            return;
+        }
+
+        $.ajax({
+            url: "/v1/api",
+            method: "DELETE",
+            contentType: "application/json",
+            data: JSON.stringify({
+                ext: ext,
+                customType: 2
+            }),
+            dataType: "json",
+            async: false,
+            success: function(json) {
+                $("#ext_" + ext).remove();
+                $("#custom_blocked_ext_size").text(custom_blocked_ext_size - 1);
+            },
+            error: function(json) {
+                alert(json.responseJSON.message);
+                return;
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

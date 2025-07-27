@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+    namespace="com.flow.extension_check.mapper.ExtensionMapper"
+>
+    <sql id="search_sql">
+        <where>
+            <if test="ext != null and ext != ''">
+                ext = #{ext}
+            </if>
+        </where>
+    </sql>
+
+    <select
+            id="list"
+            parameterType="com.flow.extension_check.dto.Extension"
+            resultType="com.flow.extension_check.dto.Extension"
+    >
+        SELECT
+        id,
+        ext,
+        register_date
+        FROM blocked_extensions
+        <include refid="search_sql" />
+    </select>
+
+    <insert
+        id="insert"
+        parameterType="com.flow.extension_check.dto.request.ExtensionRequestDto"
+        useGeneratedKeys="true"
+        keyProperty="id"
+    >
+        INSERT INTO blocked_extensions (
+            ext
+        ) VALUES (
+            #{ext}
+        )
+    </insert>
+
+    <delete
+        id="delete"
+        parameterType="java.lang.String"
+    >
+        DELETE FROM blocked_extensions
+        <include refid="search_sql" />
+    </delete>
+</mapper>

@@ -1,0 +1,11 @@
+<div
+        th:fragment="extensionBtnFragment(ext)"
+        xmlns:th="http://www.w3.org/1999/xhtml"
+        th:attr="id='ext_' + ${ext}"
+        class="badge text-bg-light"
+>
+    <span>
+        <span th:text="${ext}"></span>
+        <button class="btn btn-danger btn-sm" type="button" onclick="onClickDeleteBtn(this);" th:attr="data-ext=${ext}">X</button>
+    </span>
+</div>
