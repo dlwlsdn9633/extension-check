@@ -108,8 +108,7 @@ FixedExtension의 Enum에 해당 ext가 Fixed Extension(고정 확장자)인지 
 
 만약, 입력된 커스텀 확장자가 고정 확장자에 포함된다면, 해당 커스텀 확장자는 등록되지 않습니다.
 
-
-### 5.3 확장자 중복 작업 방지 및 알림 처리 구현
+### 5.4 확장자 중복 작업 방지 및 알림 처리 구현
 
 <img width="629" height="266" alt="Image" src="https://github.com/user-attachments/assets/e4281788-2c60-4e42-af6b-14842cba928f" />
 
