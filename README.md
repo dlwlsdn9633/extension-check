@@ -12,7 +12,7 @@ Spring Boot 기반의 확장자 차단 시스템입니다.
 - **Database**: H2 (In-Memory)
 
 ## ERD
-<img width="830" height="142" alt="Image" src="https://github.com/user-attachments/assets/4831d811-431e-4d92-b824-465c690a23ad" />
+<img width="830" height="142" alt="Image" src="https://github.com/user-attachments/assets/5d61becc-6821-4ec3-8768-9a9c36acdcdb" />
 
 - **blocked_extensions**: 차단된 확장자 데이터를 저장하는 테이블입니다.
 - **attache_files**: 저장된 파일들의 정보를 저장하는 테이블입니다.
