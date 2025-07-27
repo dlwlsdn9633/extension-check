@@ -12,7 +12,7 @@ Spring Boot 기반의 확장자 차단 시스템입니다.
 - **Database**: H2 (In-Memory)
 
 ## ERD
-<img width="830" height="142" alt="Image" src="https://github.com/user-attachments/assets/8317249c-55b9-4178-9491-5b53e0df60e2" />
+<img width="830" height="142" alt="Image" src="https://github.com/user-attachments/assets/4831d811-431e-4d92-b824-465c690a23ad" />
 
 - **blocked_extensions**: 차단된 확장자 데이터를 저장하는 테이블입니다.
 - **attache_files**: 저장된 파일들의 정보를 저장하는 테이블입니다.
@@ -25,7 +25,7 @@ Spring Boot 기반의 확장자 차단 시스템입니다.
 customType이 1인 경우, 서버는 이를 **고정 확장자**로 판단하고, handleFixedExtension() 메서드를 호출합니다.
 
 #### 1) 확장자 차단 목록 확인
-<img width="392" height="172" alt="Image" src="https://github.com/user-attachments/assets/c3ec96ee-e902-4788-8ce0-0e8576f81856" />
+<img width="392" height="172" alt="Image" src="https://github.com/user-attachments/assets/c4a67a96-2e04-4d2c-8e94-ceb93d1961cd" />
 <br />
 
 handleFixedExtension() 내부에서 extensionService.isBlocked(ext)를 호출해, 해당 확장자가 현재 차단 목록에 존재하는지 확인합니다.
@@ -42,7 +42,7 @@ customType이 2인 경우, 서버는 이를 **커스텀 확장자**로 간주하
 
 handleCustomExtension에서는 다음과 같은 3단계 검증을 수행합니다.
 
-<img width="538" height="274" alt="Image" src="https://github.com/user-attachments/assets/3b91542a-545a-4476-b34b-18f8019a4d98" />
+<img width="538" height="274" alt="Image" src="https://github.com/user-attachments/assets/e26760c8-0e21-4b25-955c-140d5fdc7499" />
 
 ### 1) 최대 등록 개수 제한
 고정 확장자를 제외한 모든 커스텀 확장자 목록을 가져옵니다.
@@ -59,7 +59,7 @@ extensionService.isBlocked(ext) 메소드를 호출해, 이미 동일한 커스�
 위 모든 검증을 통과한 경우에만, 해당 커스텀 확장자를 차단 목록에 추가합니다.
 
 ## 3. 새로고침 시, 체크 및 저장한 값 유지
-<img width="540" height="274" alt="Image" src="https://github.com/user-attachments/assets/ae29a725-ab5c-4db5-9810-00993a4b3867" />
+<img width="540" height="274" alt="Image" src="https://github.com/user-attachments/assets/e9f84de5-685a-461e-95a9-5c75405e28e6" />
 
 페이지 새로고침 시, AdminController에서는 전체 blockedExtensionList 중
 
@@ -71,7 +71,7 @@ extensionService.isBlocked(ext) 메소드를 호출해, 이미 동일한 커스�
 
 ### 4.1 파일 첨부시
 
-<img width="365" height="78" alt="Image" src="https://github.com/user-attachments/assets/77840aaa-ee9d-4be1-89b7-37952415ccfe" />
+<img width="365" height="78" alt="Image" src="https://github.com/user-attachments/assets/344bc840-2f6e-454b-b221-f59f3b773537" />
 
 파일 첨부 시, AJAX를 호출해 첨부된 파일의 ext와 customType(0)을 '/v1/api'에 POST 방식으로 요청을 보냅니다.
 해당 요청은 서버의 handleTotalExtension 메소드로 전달됩니다.
@@ -81,7 +81,7 @@ handleTotalExtension은 전달받은 확장자(ext)가 blocked_extensions 테이
 
 ## 4.2 파일 업로드시
 
-<img width="378" height="278" alt="Image" src="https://github.com/user-attachments/assets/b44492e2-1583-46d7-94a3-b969127e5a46" />
+<img width="378" height="278" alt="Image" src="https://github.com/user-attachments/assets/485187d9-448e-40da-a37a-7727e51f4515" />
 
 업로드가 진행되면, 실제 업로드는 FileService.uploadFiles 메서드에서 처리됩니다.
 이 메서드 내에서 extensionService.isBlocked를 통해 한 번 더 확장자 차단 여부를 확인합니다.
@@ -91,7 +91,7 @@ handleTotalExtension은 전달받은 확장자(ext)가 blocked_extensions 테이
 ## 5. 그 외 처리사항
 ### 5.1 Fixed Extension 확장성 고려
 
-<img width="266" height="285" alt="Image" src="https://github.com/user-attachments/assets/d5fec7e9-2bd3-4eb3-90ab-921d512f2adc" />
+<img width="266" height="285" alt="Image" src="https://github.com/user-attachments/assets/0c32f5e0-6d1f-4789-b5a8-571297b31698" />
 
 FixedExtension을 Enum으로 정의함으로써, 추후 고정 확장자를 추가할 때 해당 Enum에 Label과 함께 값만 추가하면, 자동으로 고정 확장자가 추가됩니다.
 
@@ -99,6 +99,6 @@ FixedExtension을 Enum으로 정의함으로써, 추후 고정 확장자를 추�
 
 ### 5.2 유효성 검사
 
-<img width="467" height="97" alt="Image" src="https://github.com/user-attachments/assets/df068448-614d-4fed-88c1-2029ac7240e1" />
+<img width="467" height="97" alt="Image" src="https://github.com/user-attachments/assets/576e279f-f1c0-440f-acac-0e8644d6275f" />
 
 고정 확장자든 커스텀 확장자든, Controller에서 전달받은 ext는 처리에 앞서 먼저 해당 값이 존재하는지와 길이가 20자를 초과하지 않는지를 검사합니다.
