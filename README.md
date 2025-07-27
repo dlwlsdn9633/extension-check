@@ -25,7 +25,7 @@ Spring Boot 기반의 확장자 차단 시스템입니다.
 customType이 1인 경우, 서버는 이를 **고정 확장자**로 판단하고, handleFixedExtension() 메서드를 호출합니다.
 
 #### 1) 확장자 차단 목록 확인
-<img width="392" height="172" alt="Image" src="https://github.com/user-attachments/assets/c4a67a96-2e04-4d2c-8e94-ceb93d1961cd" />
+<img width="535" height="248" alt="Image" src="https://github.com/user-attachments/assets/4ed6dd87-9cac-47ca-b684-a0fd6c9ba3c7" />
 <br />
 
 handleFixedExtension() 내부에서 extensionService.isBlocked(ext)를 호출해, 해당 확장자가 현재 차단 목록에 존재하는지 확인합니다.
